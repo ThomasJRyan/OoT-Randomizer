@@ -75,6 +75,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Add it to the extended object table
     add_to_extended_object_table(rom, 0x194, dd_obj_file)
 
+    # Remove color commands inside certain object display lists
+    rom.write_int32s(0x1455818, [0x00000000, 0x00000000, 0x00000000, 0x00000000]) # Small Key
+    rom.write_int32s(0x14B9F20, [0x00000000, 0x00000000, 0x00000000, 0x00000000]) # Boss Key
+
     # Force language to be English in the event a Japanese rom was submitted
     rom.write_byte(0x3E, 0x45)
     rom.force_patch.append(0x3E)
