@@ -132,6 +132,30 @@ item_draw_table_entry_t item_draw_table[] = {
     [0x74] = { draw_gi_gs_token,            { 0x06004DB0, 0x06004EB8 } }, // Gold Skulltula Token II (only for En_Si)
 
     [0x75] = { draw_gi_various_opa0,        { 0x06000660 } }, // Triforce Piece
+
+    [0x76] = { draw_gi_song_notes,          { 0x06000AE0, 0xFF83DCFF } }, // Music Note (Zelda)
+    [0x77] = { draw_gi_song_notes,          { 0x06000AE0, 0x801F0BFF } }, // Music Note (Epona)
+    [0x78] = { draw_gi_song_notes,          { 0x06000AE0, 0x72FF51FF } }, // Music Note (Saria)
+    [0x79] = { draw_gi_song_notes,          { 0x06000AE0, 0xFFFF00FF } }, // Music Note (Sun)
+    [0x7A] = { draw_gi_song_notes,          { 0x06000AE0, 0x00F9FFFF } }, // Music Note (Time)
+    [0x7B] = { draw_gi_song_notes,          { 0x06000AE0, 0x9B9B9BFF } }, // Music Note (Storm)
+    
+    [0x7C] = { draw_gi_small_keys,          { 0x06000800, 0x00FF00FF, 0x008000FF } }, // Forest Temple Small Key
+    [0x7D] = { draw_gi_small_keys,          { 0x06000800, 0xFF0000FF, 0x800000FF } }, // Fire Temple Small Key
+    [0x7E] = { draw_gi_small_keys,          { 0x06000800, 0x0000FFFF, 0x000080FF } }, // Water Temple Small Key
+    [0x7F] = { draw_gi_small_keys,          { 0x06000800, 0xFF4000FF, 0x804000FF } }, // Spirit Temple Small Key
+    [0x80] = { draw_gi_small_keys,          { 0x06000800, 0xFF00FFFF, 0x800080FF } }, // Shadow Temple Small Key
+    [0x81] = { draw_gi_small_keys,          { 0x06000800, 0xFFFFFFFF, 0x808080FF } }, // Bottom of the Well Small Key
+    [0x82] = { draw_gi_small_keys,          { 0x06000800, 0xFFAE55FF, 0x800133FF } }, // Gerudo Training Small Key
+    [0x83] = { draw_gi_small_keys,          { 0x06000800, 0xACC16BFF, 0xDBDA81FF } }, // Gerudo Fortress Small Key
+    [0x84] = { draw_gi_small_keys,          { 0x06000800, 0x262626FF, 0x101010FF } }, // Ganon's Castle Small Key
+
+    [0x85] = { draw_gi_boss_keys,           { 0x06000CA0, 0x06000F08, 0x00FF00FF, 0x20402080 } }, // Forest Boss Key
+    [0x86] = { draw_gi_boss_keys,           { 0x06000CA0, 0x06000F08, 0xFF0000FF, 0x40202080 } }, // Fire Boss Key
+    [0x87] = { draw_gi_boss_keys,           { 0x06000CA0, 0x06000F08, 0x0000FFFF, 0x20204080 } }, // Water Boss Key
+    [0x88] = { draw_gi_boss_keys,           { 0x06000CA0, 0x06000F08, 0xFF8000FF, 0xFF8000FF } }, // Spirit Boss Key
+    [0x89] = { draw_gi_boss_keys,           { 0x06000CA0, 0x06000F08, 0xFF00FFFF, 0x40204080 } }, // Shadow Boss Key
+    [0x8A] = { draw_gi_boss_keys,           { 0x06000CA0, 0x06000F08, 0x020202FF, 0x202020FF } }, // Ganon Boss Key
 };
 
 void base_draw_gi_model(z64_game_t *game, uint32_t draw_id) {
