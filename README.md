@@ -2,26 +2,6 @@
 
 This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo 64.
 
-**WARNING:** This branch is a modified version of the randomizer. It is **not** officially supported and may be **very unstable**.
-Please refrain from asking questions and from reporting issues in the main Randomizer Discord when using this branch.
-Instead, you can open an issue on this fork [here](https://github.com/ThomasJRyan/OoT-Randomizer/issues) or contact me directly on discord (ALinkToTheFuture#3001) for any help, report or request.
-
-This is a fork of TestRunner and Roman's branches for the purpose of adding in features that are otherwise unwanted in the main randomizer
-
-Differences between this branch and the main Dev branch (on [Testrunner's Fork](https://github.com/TestRunnerSRL/OoT-Randomizer/tree/Dev), as added by Roman):
-* Various GUI tweaks and improvements along with setting tooltip/option changes
-* "Open Kakariko Gate" option to have the gate to Death Mountain being open from the start, as well as the Mask Shop opening upon obtaining Zelda's Letter without needing to show it to the guard from [Cuphat's Open Mask Shop Branch](https://github.com/Cuphat/OoT-Randomizer/tree/open_kak_mask_shop)
-* New cosmetic options to configure HUD Button colors from [Cuphat's HUD Colors Branch](https://github.com/Cuphat/OoT-Randomizer/tree/hud_colors)
-* "Entrance Shuffle" (aka ER) is changed into a set of more advanced and customizable options including mixing entrance pools, decoupling entrances and randomizing overworld spawns or warp songs.
-* Picking up Gold Skulltula Tokens in non-Tokensanity displays a self-closing textbox which no longer freezes the player.
-* "Bombchus In Logic" is improved to include bombchu drops (from grass, pots, etc) that start dropping once you have found Bombchus.
-* New cosmetic option to have all ingame item model colors, as well as drop icons, match cosmetic colors (for hearts, magic and gauntlets).
-
-Differences between this branch and [Roman's fork](https://github.com/Roman971/OoT-Randomizer):
-* TBD
-
-## Index
-
 * [Installation](#installation)
 * [General Description](#general-description)
   * [Getting Stuck](#getting-stuck)
@@ -34,8 +14,13 @@ Differences between this branch and [Roman's fork](https://github.com/Roman971/O
 
 ## Installation
 
-To run this program, clone or download this repository and either run ```Gui.py``` for a graphical interface or ```OoTRandomizer.py``` for the command line version. 
-They both require Python 3.6+.
+It is strongly suggested users use the web generator from here:
+
+https://ootrandomizer.com
+
+If you wish to run the script raw, clone this repository and either run ```Gui.py``` for a
+graphical interface or ```OoTRandomizer.py``` for the command line version. They both require Python 3.6+. This will be fully featured,
+but the seeds you generate will have different random factors than the bundled release.
 
 This randomizer requires The Legend of Zelda: Ocarina of Time version ```1.0 NTSC-US```. This randomizer includes an in-built decompressor, but if
 the user wishes a pre-decompressed ROM may be supplied as input. Please be sure your input ROM filename is either a .n64 or .z64 file. For users
@@ -123,7 +108,6 @@ player.
 * Disabled settings don't show up in the spoiler.
 * Plando will now accept JSON lists for `item` in the location dictionary to randomly choose between for placement.
   * Attempts to not exceed item pool values until all the pool counts for the items in the list are reached.
-* "Start with" settings are now handled by the Plando library.
 * Further seed generation speed improvements.
 * The main search algorithm was renamed Search (from Playthrough) to avoid confusion with the spoiler playthrough.
 
@@ -132,7 +116,7 @@ player.
 * Spoilers for plando'd seeds now correctly show the tricks enabled for the seed.
 * Plando no longer occasionally attempts to place an item on a location where it's not allowed.
 * Plando starting items and items set in specific locations now count toward the pool allocation. (Starting items are replaced with junk.)
-* Plando now refuses to place more than the maximum amount of bottles, adult trade items, shop items, or total non-junk items.
+* Plando now refuses to place more than the maximum amount of bottles, adult trade items, or total non-junk items.
 * Starting items for adult that auto-equip should do so correctly now. (Non-Kokiri Tunics won't autoequip at the moment.)
 * Fixed two chests in MQ Shadow Temple that had swapped names in plando and spoilers.
 * Removed (unnecessarily) duplicated/overlapping hints.
