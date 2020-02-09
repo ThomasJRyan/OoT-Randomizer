@@ -1,7 +1,7 @@
-dpad_draw:
+skulltula_draw_count:
     addiu   sp, sp, -0x10
     sw      ra, 0(sp)
-    jal     draw_dpad
+    jal     draw_skulltula_count
     nop
     lw      t6, 0x1C44(s6)
     lui     t8, 0xDB06
