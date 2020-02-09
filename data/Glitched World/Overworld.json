@@ -508,7 +508,7 @@
     {
         "region_name": "Castle Town Mask Shop",
         "events": {
-            "Skull Mask": "at('Kakariko Village', is_child and Zeldas_Letter)",
+            "Skull Mask": "Zeldas_Letter and (open_kakariko or at('Kakariko Village', is_child))",
             "Mask of Truth": "'Skull Mask' and
                 at('Lost Woods', is_child and can_play(Sarias_Song)) and
                 at('Graveyard', is_child and at_day) and
@@ -610,7 +610,7 @@
                     (Sticks or Kokiri_Sword or can_use(Dins_Fire)))",
             "Kakariko Back Grotto": "True",
             "Graveyard": "True",
-            "Death Mountain": "Zeldas_Letter or is_adult or can_hover"
+            "Death Mountain": "Zeldas_Letter or is_adult or open_kakariko or can_hover"
         }
     },
     {
