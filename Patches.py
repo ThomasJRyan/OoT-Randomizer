@@ -75,10 +75,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Add it to the extended object table
     add_to_extended_object_table(rom, 0x194, dd_obj_file)
 
-    # Remove color commands inside certain object display lists
-    rom.write_int32s(0x1455818, [0x00000000, 0x00000000, 0x00000000, 0x00000000]) # Small Key
-    rom.write_int32s(0x14B9F20, [0x00000000, 0x00000000, 0x00000000, 0x00000000]) # Boss Key
-
     # Force language to be English in the event a Japanese rom was submitted
     rom.write_byte(0x3E, 0x45)
     rom.force_patch.append(0x3E)
@@ -791,10 +787,17 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
             new_entrance = entrance.data
             replaced_entrance = entrance.replaces.data
 
+            if entrance.replaces.type == 'Grotto':
+                if entrance.replaces.primary:
+                    replaced_entrance['index'] = 0x1000 + replaced_entrance['grotto_id']
+                else:
+                    replaced_entrance['index'] = 0x7FFF
+
             exit_updates.append((new_entrance['index'], replaced_entrance['index']))
 
-            for address in new_entrance.get('addresses', []):
-                rom.write_int16(address, replaced_entrance['index'])
+            if "dynamic_address" in new_entrance:
+                # Dynamic exits are special and have to be set on a specific address
+                rom.write_int16(new_entrance["dynamic_address"], replaced_entrance['index'])
 
             if "blue_warp" in new_entrance:
                 if "blue_warp" in replaced_entrance:
@@ -812,13 +815,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                 copy_entrance_record(blue_out_data + 2, new_entrance["blue_warp"] + 2, 2)
                 copy_entrance_record(replaced_entrance["index"], new_entrance["blue_warp"], 2)
 
+        
     exit_table = generate_exit_lookup_table()
-    
-    if world.entrance_shuffle:
-        # Disable the fog state entirely to avoid fog glitches
-        rom.write_byte(rom.sym('NO_FOG_STATE'), 1)
 
-    if world.disable_trade_revert:
+    if world.shuffle_interior_entrances or world.shuffle_overworld_entrances:
         # Disable trade quest timers and prevent trade items from ever reverting
         rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
         rom.write_int16s(0xB6D460, [0x0030, 0x0035, 0x0036]) # Change trade items revert table to prevent all reverts
@@ -828,6 +828,9 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
         # Prevent the ocarina cutscene from leading straight to hyrule field
         rom.write_byte(rom.sym('OCARINAS_SHUFFLED'), 1)
+
+        # Disable the fog state entirely to avoid fog glitches
+        rom.write_byte(rom.sym('NO_FOG_STATE'), 1)
 
         # Combine all fence hopping LLR exits to lead to the main LLR exit
         for k in [0x028A, 0x028E, 0x0292]: # Southern, Western, Eastern Gates
@@ -844,6 +847,12 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         # Change Impa escorts to bring link at the hyrule castle grounds entrance from market, instead of hyrule field
         rom.write_int16(0xACAA2E, 0x0138) # 1st Impa escort
         rom.write_int16(0xD12D6E, 0x0138) # 2nd+ Impa escort
+
+        # Change hardcoded Owl Drop entrance indexes to their new indexes (cutscene hardcodes)
+        for entrance in world.get_shuffled_entrances(type='OwlDrop'):
+            rom.write_int16(entrance.data['code_address'], entrance.replaces.data['index'])
+
+        set_entrance_updates(world.get_shuffled_entrances(type='Overworld'))
 
     if world.shuffle_dungeon_entrances:
         rom.write_byte(rom.sym('DUNGEONS_SHUFFLED'), 1)
@@ -876,8 +885,19 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         #door.
         rom.write_byte(0x021862E3, 0xC2)
 
-    # Set entrances to update, except grotto entrances which are handled on their own at a later point
-    set_entrance_updates(filter(lambda entrance: entrance.type != 'Grotto', world.get_shuffled_entrances()))
+        # Disable the fog state entirely to avoid fog glitches
+        rom.write_byte(rom.sym('NO_FOG_STATE'), 1)
+
+        set_entrance_updates(world.get_shuffled_entrances(type='Dungeon'))
+
+    if world.shuffle_interior_entrances:
+        # Change the Happy Mask Shop "throw out" entrance index to the new one (hardcode located in the shop actor)
+        rom.write_int16(0xC6DA5E, world.get_entrance('Castle Town Mask Shop -> Castle Town').replaces.data['index'])
+
+        set_entrance_updates(world.get_shuffled_entrances(type='Interior') + world.get_shuffled_entrances(type='SpecialInterior'))
+
+    if world.shuffle_grotto_entrances:
+        set_entrance_updates(world.get_shuffled_entrances(type='Grave') + world.get_shuffled_entrances(type='SpecialGrave'))
 
     for k, v in [(k,v) for k, v in exit_updates if k in exit_table]:
         for addr in exit_table[k]:
@@ -988,11 +1008,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         save_context.write_bits(0x00D4 + 0x48 * 0x1C + 0x08 + 0x3, 0x10) # Beat First Dampe Race (& Chest Spawned)
 
     # Make the Kakariko Gate not open with the MS
-    if not world.open_kakariko:
-        rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
-        rom.write_byte(rom.sym('OPEN_KAKARIKO'), 0)
-    else:
-        rom.write_byte(rom.sym('OPEN_KAKARIKO'), 1)
+    rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
 
     if world.zora_fountain == 'open':
         save_context.write_bits(0x0EDB, 0x08) # "Moved King Zora"
@@ -1082,7 +1098,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # Add a gate-opening guard on the Wasteland side of the Gerudo gate when the card is shuffled or certain levels of ER.
     # Overrides the generic guard at the bottom of the ladder in Gerudo Fortress
-    if world.shuffle_gerudo_card or world.shuffle_overworld_entrances or world.shuffle_special_interior_entrances:
+    if world.shuffle_gerudo_card or world.shuffle_overworld_entrances or world.shuffle_special_indoor_entrances:
         # Add a gate opening guard on the Wasteland side of the Gerudo Fortress' gate
         new_gate_opening_guard = [0x0138, 0xFAC8, 0x005D, 0xF448, 0x0000, 0x95B0, 0x0000, 0x0301]
         rom.write_int16s(0x21BD3EC, new_gate_opening_guard)  # Adult Day
@@ -1510,12 +1526,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                 load_table_pointer = rom.sym('GROTTO_LOAD_TABLE') + 4 * entrance.data['grotto_id']
                 rom.write_int16(load_table_pointer, entrance.data['entrance'])
                 rom.write_byte(load_table_pointer + 2, entrance.data['content'])
-            else:
-                return_table_pointer = rom.sym('GROTTO_RETURN_TABLE') + 32 * entrance.data['grotto_id']
-                rom.write_int16(return_table_pointer, entrance.data['entrance'])
-                rom.write_byte(return_table_pointer + 2, entrance.data['room'])
-                rom.write_int16(return_table_pointer + 4, entrance.data['angle'])
-                rom.write_int32s(return_table_pointer + 8, entrance.data['pos'])
 
         # Update grotto actors based on their new entrance
         set_grotto_shuffle_data(rom, world)
@@ -1638,14 +1648,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_bytes(0xE2ADB2, [0x70, 0x7A])
         rom.write_bytes(0xE2ADB6, [0x70, 0x57])
         buildBossRewardHints(world, messages)
-
-    if world.tokensanity == 'off':
-        # Change the GS token pickup message to fade out after 2 seconds (40 frames)
-        update_message_by_id(messages, 0x00B4, bytearray(get_message_by_id(messages, 0x00B4).raw_text)[:-1] + b'\x0E\x28')
-        # Prevent the GS token actor from freezing the player and waiting for the textbox to be closed 
-        rom.write_int32s(0xEC68C0, [0x00000000, 0x00000000])
-        rom.write_int32s(0xEC69B0, [0x00000000, 0x00000000])
-        rom.write_int32(0xEC6A10, 0x34020002) # li v0, 2
 
     # update happy mask shop to use new SOLD OUT text id
     rom.write_int16(shop_item_file.start + 0x1726, shop_items[0x26].description_message)
@@ -1922,9 +1924,13 @@ def set_grotto_shuffle_data(rom, world):
     for entrance in world.get_shuffled_entrances(type='Grotto'):
         if entrance.primary:
             grotto_id = (entrance.data['scene'] << 8) + entrance.data['content']
-            grotto_entrances_override[grotto_id] = entrance.replaces.data['index']
+            if entrance.replaces.type == 'Grotto':
+                grotto_entrances_override[grotto_id] = 0x1000 + entrance.replaces.data['grotto_id']
+            else:
+                grotto_entrances_override[grotto_id] = entrance.replaces.data['index']
         else:
-            rom.write_int16(rom.sym('GROTTO_EXIT_LIST') + 2 * entrance.data['grotto_id'], entrance.replaces.data['index'])
+            exit_index = entrance.replaces.data.get('index', 0x7FFF)
+            rom.write_int16(rom.sym('GROTTO_EXIT_LIST') + 2 * entrance.data['grotto_id'], exit_index)
 
     # Override grotto actors data with the new data
     get_actor_list(rom, override_grotto_data)

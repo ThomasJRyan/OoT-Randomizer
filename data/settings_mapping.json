@@ -137,21 +137,16 @@
           ]
         },
         {
-          "name": "various_section",
-          "text": "Various",
+          "name": "open_section",
+          "text": "Open",
           "row_span": [6,6,9],
           "settings": [
             "open_forest",
-            "open_kakariko",
             "open_door_of_time",
             "zora_fountain",
             "gerudo_fortress",
             "bridge",
             "bridge_tokens",
-            "triforce_hunt",
-            "triforce_goal_per_world",
-            "bombchus_in_logic",
-            "one_item_per_dungeon",
             "trials_random",
             "trials"
           ]
@@ -162,15 +157,11 @@
           "row_span": [6,6,9],
           "settings": [
             "starting_age",
-            "shuffle_interior_entrances",
-            "shuffle_grotto_entrances",
-            "shuffle_dungeon_entrances",
-            "shuffle_overworld_entrances",
-            "mix_entrance_pools",
-            "decouple_entrances",
-            "owl_drops",
-            "warp_songs",
-            "spawn_positions",
+            "entrance_shuffle",
+            "triforce_hunt",
+            "triforce_goal_per_world",
+            "bombchus_in_logic",            
+            "one_item_per_dungeon",
             "mq_dungeons_random",
             "mq_dungeons"
           ]
@@ -309,7 +300,6 @@
           "settings": [
             "default_targeting",
             "display_dpad",
-            "correct_model_colors",
             "randomize_all_cosmetics"
           ]
         },
@@ -318,7 +308,7 @@
           "text": "Equipment",
           "is_colors": true,
           "col_span": 1,
-          "row_span": [5,5,5],
+          "row_span": [6,6,6],
           "settings": [
             "kokiri_color",
             "goron_color",
@@ -335,14 +325,10 @@
           "text": "UI Colors",
           "is_colors": true,
           "col_span": 1,
-          "row_span": [5,5,5],
+          "row_span": [6,6,6],
           "settings": [
             "heart_color",
-            "magic_color",
-            "a_button_color",
-            "b_button_color",
-            "c_button_color",
-            "start_button_color"
+            "magic_color"
           ]
         },
         {
@@ -350,7 +336,7 @@
           "text": "Navi Colors",
           "is_colors": true,
           "col_span": 2,
-          "row_span": [5,5,5],
+          "row_span": [6,6,6],
           "settings": [
             "navi_color_default_inner",
             "navi_color_default_outer",

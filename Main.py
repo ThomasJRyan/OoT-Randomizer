@@ -626,5 +626,5 @@ def create_playthrough(spoiler):
     # Then we can finally output our playthrough
     spoiler.playthrough = OrderedDict((str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres))
 
-    if worlds[0].entrance_shuffle:
+    if worlds[0].entrance_shuffle != 'off':
         spoiler.entrance_playthrough = OrderedDict((str(i + 1), list(sphere)) for i, sphere in enumerate(entrance_spheres))
