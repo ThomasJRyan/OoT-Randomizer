@@ -101,6 +101,19 @@
     nop
     nop
 
+; Change graphic ID to be treated as unsigned
+; Replaces: lb      t9, 0x0852(s0)
+.orga 0xBE6538
+    lbu     t9, 0x0852(s0)
+
+; Replaces: lb      v0, 0x0852(s0)
+.orga 0xAF1398
+    lbu     v0, 0x0852(s0)
+
+; Replaces: lb      v0, 0x0852(s0)
+.orga 0xAF13AC
+    lbu     v0, 0x0852(s0)
+
 ; Override chest speed
 ; Replaces:
 ;   lb      t2, 0x0002 (t1)
@@ -1636,6 +1649,7 @@ skip_GS_BGS_text:
     nop
     or      a0, s0, zero
 
+<<<<<<< HEAD
 ; ==================================================================================================
 ; HUD Button Colors
 ; ==================================================================================================
@@ -1662,4 +1676,18 @@ skip_GS_BGS_text:
 
     jr      ra
     nop
+=======
+;==================================================================================================
+; Base Get Item Draw Override
+;==================================================================================================
+.orga 0xACD020
+.area 0x44
+    addiu   sp, sp, -0x18
+    sw      ra, 0x0014(sp)
+    jal     base_draw_gi_model
+    nop
+    lw      ra, 0x0014(sp)
+    jr      ra
+    addiu   sp, sp, 0x18
+>>>>>>> 66bb66434d87fc125035c9e395c3119c2e06e500
 .endarea
