@@ -4,9 +4,11 @@ This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo
 
 **WARNING:** This branch is a modified version of the randomizer. It is **not** officially supported and may be **very unstable**.
 Please refrain from asking questions and from reporting issues in the main Randomizer Discord when using this branch.
-Instead, you can open an issue on this fork [here](https://github.com/Roman971/OoT-Randomizer/issues) or contact me directly on discord (Roman#7295) for any help, report or request.
+Instead, you can open an issue on this fork [here](https://github.com/ThomasJRyan/OoT-Randomizer/issues) or contact me directly on discord (ALinkToTheFuture#3001) for any help, report or request.
 
-Differences between this branch and the main Dev branch (on [Testrunner's Fork](https://github.com/TestRunnerSRL/OoT-Randomizer/tree/Dev)):
+This is a fork of TestRunner and Roman's branches for the purpose of adding in features that are otherwise unwanted in the main randomizer
+
+Differences between this branch and the main Dev branch (on [Testrunner's Fork](https://github.com/TestRunnerSRL/OoT-Randomizer/tree/Dev), as added by Roman):
 * Various GUI tweaks and improvements along with setting tooltip/option changes
 * "Open Kakariko Gate" option to have the gate to Death Mountain being open from the start, as well as the Mask Shop opening upon obtaining Zelda's Letter without needing to show it to the guard from [Cuphat's Open Mask Shop Branch](https://github.com/Cuphat/OoT-Randomizer/tree/open_kak_mask_shop)
 * New cosmetic options to configure HUD Button colors from [Cuphat's HUD Colors Branch](https://github.com/Cuphat/OoT-Randomizer/tree/hud_colors)
@@ -14,6 +16,9 @@ Differences between this branch and the main Dev branch (on [Testrunner's Fork](
 * Picking up Gold Skulltula Tokens in non-Tokensanity displays a self-closing textbox which no longer freezes the player.
 * "Bombchus In Logic" is improved to include bombchu drops (from grass, pots, etc) that start dropping once you have found Bombchus.
 * New cosmetic option to have all ingame item model colors, as well as drop icons, match cosmetic colors (for hearts, magic and gauntlets).
+
+Differences between this branch and [Roman's fork](https://github.com/Roman971/OoT-Randomizer):
+* TBD
 
 ## Index
 
