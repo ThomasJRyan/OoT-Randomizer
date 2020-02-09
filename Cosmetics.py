@@ -311,6 +311,12 @@ def patch_dpad(rom, settings, log, symbols):
         rom.write_byte(symbols['CFG_DISPLAY_DPAD'], 0x00)
     log.display_dpad = settings.display_dpad
 
+# def patch_skulltula_count(rom, settings, log, symbols):
+#     if settings.skulltula_count:
+#         rom.write_byte(symbols['CFG_SKULLTULA_COUNT'], 0x01)
+#     else:
+#         rom.write_byte(symbols['CFG_SKULLTULA_COUNT'], 0x00)
+#     log.skulltula_count = settings.skulltula_count
 
 
 def patch_music(rom, settings, log, symbols):

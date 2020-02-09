@@ -14,6 +14,7 @@
 #include "ganon.h"
 #include "extern_ctxt.h"
 #include "fog.h"
+// #include "skulltula_hud.h"
 
 void c_init() {
     heap_init();
@@ -30,6 +31,7 @@ void before_game_state_update() {
     update_hud_colors();
     process_extern_ctxt();
     override_fog_state();
+    // draw_skulltula_count();
 }
 
 void after_game_state_update() {

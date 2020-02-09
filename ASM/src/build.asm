@@ -61,7 +61,6 @@ RANDO_CONTEXT:
 .include "potion_shop.asm"
 .include "jabu_elevator.asm"
 .include "dampe.asm"
-.include "dpad.asm"
 .include "chests.asm"
 .include "bunny_hood.asm"
 .include "colors.asm"
@@ -78,6 +77,7 @@ RANDO_CONTEXT:
 .include "audio.asm"
 .include "king_zora.asm"
 .include "agony.asm"
+.include "hud_draw.asm"
 .importobj "../build/bundle.o"
 .align 8
 FONT_TEXTURE:
