@@ -18,7 +18,8 @@ Differences between this branch and the main Dev branch (on [Testrunner's Fork](
 * New cosmetic option to have all ingame item model colors, as well as drop icons, match cosmetic colors (for hearts, magic and gauntlets).
 
 Differences between this branch and [Roman's fork](https://github.com/Roman971/OoT-Randomizer):
-* TBD
+* Skulltula Token counter added to HUD
+* Coloured small keys, boss keys, and music notes
 
 ## Index
 
