@@ -548,7 +548,10 @@ class WorldDistribution(object):
                     elif starting_item in item_groups['AdultTrade']:
                         item = self.pool_replace_item(item_pools, "#AdultTrade", self.id, "#Junk", worlds)
                     elif IsItem(starting_item):
-                        item = self.pool_replace_item(item_pools, starting_item, self.id, "#Junk", worlds)
+                        try:
+                            item = self.pool_replace_item(item_pools, starting_item, self.id, "#Junk", worlds)
+                        except KeyError:
+                            pass  # If a normal item exceeds the item pool count, continue.
                 except KeyError:
                     raise RuntimeError('Started with too many "%s" in world %d, and not enough "%s" are available in the item pool to be removed.' % (starting_item, self.id + 1, starting_item))
 
@@ -598,7 +601,13 @@ class WorldDistribution(object):
             try:
                 item = self.pool_remove_item(item_pools, record.item, 1, world_id=player_id, ignore_pools=ignore_pools)[0]
             except KeyError:
-                if record.item in item_groups['Bottle']:
+                if location.type == 'Shop' and "Buy" in record.item:
+                    try:
+                        self.pool_remove_item([item_pools[0]], "Buy *", 1, world_id=player_id)
+                        item = ItemFactory([record.item], world=world)[0]
+                    except KeyError:
+                        raise RuntimeError('Too many shop buy items were added to world %d, and not enough shop buy items are available in the item pool to be removed.' % (self.id + 1))
+                elif record.item in item_groups['Bottle']:
                     try:
                         item = self.pool_replace_item(item_pools, "#Bottle", player_id, record.item, worlds)
                     except KeyError:
